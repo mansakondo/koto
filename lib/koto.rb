@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
-require_relative "koto/version"
+require 'parser/current'
 
 module Koto
-  class Error < StandardError; end
-  # Your code goes here...
+  require "koto/version"
+
+  module Parser
+    module AST
+      require 'koto/parser/ast/processor'
+      require 'koto/parser/ast/processor/name_processor'
+    end
+  end
 end
