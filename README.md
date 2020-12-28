@@ -26,7 +26,7 @@ Load *koto*.
 ```ruby
 require 'koto'
 ```
-An code example with the <code>Koto::Parser::AST::Processor</code> which extends <code>Parser::AST::Processor</code>.
+An code example with <code>Koto::Parser::AST::Processor</code> which extends <code>Parser::AST::Processor</code>.
 ```ruby                                                            
 node = Parser::CurrentRuby.parse("Koto::Parser::AST::Processor::Resolver")      
                                      
