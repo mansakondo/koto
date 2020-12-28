@@ -28,7 +28,7 @@ require 'koto'
 ```
 An code example with the <code>NameProcessor</code> which extends <code>Parser::AST::Processor</code>.
 ```ruby                                                            
-node   = parser.parse("Koto::Parser::AST::Processor::Resolver")      
+node = Parser::CurrentRuby.parse("Koto::Parser::AST::Processor::Resolver")      
                                      
 p node                               
 # (const                        
