@@ -26,35 +26,6 @@ Load *koto*.
 ```ruby
 require 'koto'
 ```
-Parse and process a chunk of code.
-```ruby
-parser = Koto::Parser::CurrentRuby.new
-
-code = "<<-CODE
-foo = "bar"
-p foo
-CODE"
-
-ast = parser.parse(code)
-
-p ast
-# (lvasgn 
-#   :foo
-#   (str "bar"))
-# (lvar
-#   :foo)
-
-processor = Koto::Parser::AST::Processor.new
-
-p processor.process_all(ast)
-# [(lvasgn 
-#   :foo
-#   (str "bar"))
-# (lvasgn
-#   :foo
-#   (str "bar")) # => resolved reference to variable :foo
-# ]
-```
 An code example with the <code>NameProcessor</code> which extends <code>Parser::AST::Processor</code>.
 ```ruby                                                            
 node   = parser.parse("Koto::Parser::AST::Processor::Resolver")      
@@ -72,7 +43,7 @@ p node
 #     :Processor)                                                                                                                             
 #   :Resolver)                                                                                                                                
                                                                                                                                               
-processor = Koto::Parser::AST::Processor::NameProcessor.new                                                                                        
+processor = Koto::Parser::AST::NameProcessor.new                                                                                        
                                                                                                                                               
 p processor.process(node)
 # (const
