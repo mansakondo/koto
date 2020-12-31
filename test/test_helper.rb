@@ -6,14 +6,27 @@ require "koto"
 require "minitest/autorun"
 
 module TestHelper
-  Parser = ::Parser::CurrentRuby
+
+  def parser
+    builder = Koto::Parser::Builders::Default.new
+    ::Parser::CurrentRuby.new(builder)
+  end
+
+  def parse(source)
+    buffer = ::Parser::Source::Buffer.new('(string)', :source => source)
+    parser.parse(buffer)
+  end
 
   def n(type, children)
-    ::Parser::AST::Node.new(type, children)
+    Koto::Parser::AST::Node.new(type, children)
   end
 
   def processor
     Koto::Parser::AST::Processor.new
+  end
+
+  def process(node)
+    processor.process(node)
   end
 
   def name_processor
