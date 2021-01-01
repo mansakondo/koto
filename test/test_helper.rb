@@ -29,7 +29,11 @@ module TestHelper
     processor.process(node)
   end
 
+  def context
+    Koto::Parser::AST::Processor::Context.new
+  end
+
   def name_processor
-    Koto::Parser::AST::NameProcessor.new
+    Koto::Parser::AST::Processor::NameProcessor.new
   end
 end

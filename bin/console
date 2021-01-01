@@ -29,7 +29,7 @@ require "koto"
   end
 
   def name_processor
-    Koto::Parser::AST::NameProcessor.new
+    Koto::Parser::AST::Processor::NameProcessor.new
   end
 
 # (If you use this, don't forget to add pry to your Gemfile!)
