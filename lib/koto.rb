@@ -10,7 +10,15 @@ module Koto
     module AST
       require 'koto/parser/ast/node'
       require 'koto/parser/ast/processor'
-      require 'koto/parser/ast/processor/name_processor'
+
+      class Processor
+        require "koto/parser/ast/processor/context"
+        require 'koto/parser/ast/processor/name_processor'
+      end
+    end
+
+    module Builders
+      require "koto/parser/builders/default"
     end
 
     module Builders

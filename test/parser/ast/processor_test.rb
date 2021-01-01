@@ -12,8 +12,22 @@ class ProcessorTest < MiniTest::Test
   end
 
   def test_should_assign_name_to_named_nodes
-    node = parse("class Name; end")
-    node = process(node)
+    node = parse "class Name; end"
+    node = process node
     assert node.name
+  end
+
+  def test_context
+    p = processor
+    c = p.context
+    assert c
+
+    node = parse "module AST; class Context; def get_in(node); stack << node; end; end; end"
+    node = p.process node
+    assert_equal :module, node.type
+
+    node = parse "class Context; private; def method; end; end"
+    node = p.process node
+    assert_equal :private, c.access
   end
 end
