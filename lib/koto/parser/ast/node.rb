@@ -8,12 +8,15 @@ module Koto
         attr_reader :context
 
         def scope
-          scopes = context.scopes
-          scopes.last
+          context.current_scope
         end
 
         def access
           context.access
+        end
+
+        def symbols
+          context.symbols
         end
 
         def assign_properties(properties)
@@ -24,6 +27,7 @@ module Koto
           end
 
           if (context = properties[:context])
+            context = context.deep_dup if context.frozen?
             @context = context
           end
         end

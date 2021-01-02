@@ -14,11 +14,12 @@ module Koto
       class Processor
         require "koto/parser/ast/processor/context"
         require 'koto/parser/ast/processor/name_processor'
-      end
-    end
 
-    module Builders
-      require "koto/parser/builders/default"
+        class Context
+          require "spaghetti_stack"
+          require "koto/parser/ast/processor/context/symbol_table"
+        end
+      end
     end
 
     module Builders
