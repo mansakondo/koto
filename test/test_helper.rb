@@ -33,6 +33,10 @@ module TestHelper
     Koto::Parser::AST::Processor::Context.new
   end
 
+  def symbol_table
+    Koto::Parser::AST::Processor::Context::SymbolTable.new
+  end
+
   def name_processor
     Koto::Parser::AST::Processor::NameProcessor.new
   end
