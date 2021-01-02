@@ -6,7 +6,7 @@ module Koto
       class Processor < ::Parser::AST::Processor
 
         OBJECT_METHODS = [
-          *Object.methods
+          *(Object.methods - [:class])
         ]
 
         KERNEL_METHODS = [
@@ -40,6 +40,10 @@ module Koto
           @context = Context.new
         end
 
+        def switch_context_to(context)
+          @context = context
+        end
+
         def name_processor
           @name_processor ||= NameProcessor.new
         end
@@ -56,15 +60,36 @@ module Koto
           name       = name_processor.process(name)
           superclass = process superclass
 
-          node = node.updated nil, [name, superclass, body],
-            name: name
+          node =
+            node.updated nil,
+            [name, superclass, body],
+            :name => name
 
-          context.get_in node
+          access          = context.access
+          current_context = context.get_in(node)
 
-          node = node.updated nil, [name, superclass, process(body)],
-            name: name
+          switch_context_to current_context
 
-          context.get_out node
+          node =
+            node.updated nil,
+            [name, superclass, process(body)],
+            :name => name
+
+          symbols, current_context = context.get_out
+
+          current_context =
+            current_context.switch_access_to access
+
+          node =
+            node.updated :casgn,
+            [nil, name, node],
+            :name => name, :context => current_context, :symbols => symbols
+
+          current_context = current_context.save(node)
+
+          switch_context_to current_context
+
+          node
         end
 
         def on_module(node)
@@ -72,15 +97,36 @@ module Koto
 
           name = name_processor.process(name)
 
-          node = node.updated nil, [name, body],
-            name: name
+          node =
+            node.updated nil,
+            [name, body],
+            :name => name
 
-          context.get_in node
+          access          = context.access
+          current_context = context.get_in(node)
 
-          node = node.updated nil, [name, process(body)],
-            name: name
+          switch_context_to current_context
 
-          context.get_out node
+          node =
+            node.updated nil,
+            [name, process(body)],
+            :name => name
+
+          symbols, current_context = context.get_out
+
+          current_context =
+            current_context.switch_access_to access
+
+          node =
+            node.updated :casgn,
+            [nil, name, node],
+            :name => name, :context => current_context, :symbols => symbols
+
+          current_context = current_context.save(node)
+
+          switch_context_to current_context
+
+          node
         end
 
         def on_def(node)
@@ -88,15 +134,36 @@ module Koto
 
           args = process_all(args)
 
-          node = node.updated nil, [name, *args, body],
-            name: name
+          node =
+            node.updated nil,
+            [name, *args, body],
+            :name => name
 
-          context.get_in node
+          access          = context.access
+          current_context = context.get_in(node)
 
-          node = node.updated nil, [name, *args, process(body)],
-            name: name
+          switch_context_to current_context
 
-          context.get_out node
+          node =
+            node.updated nil,
+            [name, *args, (body = process(body))],
+            :name => name
+
+          symbols, current_context = context.get_out
+
+          current_context =
+            current_context.switch_access_to access
+
+          node =
+            node.updated nil,
+            [name, *args, body],
+            :name => name, :context => current_context, :symbols => symbols
+
+          current_context = current_context.save(node)
+
+          switch_context_to current_context
+
+          node
         end
 
         def on_const(node)
@@ -106,8 +173,9 @@ module Koto
             name = name_processor.process(node)
           end
 
-          node.updated nil, [nil, name],
-            name: name
+          node.updated nil,
+            [nil, name],
+            :name => name
         end
 
         def on_send(node)
@@ -125,16 +193,18 @@ module Koto
             end
           end
 
-          node.updated nil, [nil, name],
-            name: name
+          node.updated nil,
+            [nil, name],
+            :name => name
 
           super
         end
 
-        # @private
         def on_access(node)
-          access = node.type
-          context.switch_access_to access
+          access          = node.type
+          current_context = context.switch_access_to access
+
+          switch_context_to current_context
         end
 
         alias on_private on_access
