@@ -22,21 +22,29 @@ Or install it yourself as:
 
 ## Usage
 
-Load *koto*.
+Loading *koto*.
 ```ruby
 require 'koto'
 ```
-Getting contextual information :
+Initializing the parser :
 ```ruby
 builder = Koto::Parser::Builders::Default.new
 parser  = Parser::CurrentRuby.new(builder)
-
-code = "class Context; private; def push; pass; end; end"
-ast  = parser.parse(code)                                                                         
+```
+Setting a source buffer :
+```ruby
+code   = "class Context; private; def push; pass; end; end"
+buffer = Parser::Source::Buffer.new('(string)', source: code)
+```
+Processing data :
+```ruby
+ast = parser.parse(buffer)                                                                         
 
 processor = Koto::Parser::AST::Processor.new
 processor.process(ast)
-
+```
+Getting contextual information :
+```ruby
 context = processor.context                                                                                                  
 symbols = context.symbols
 
