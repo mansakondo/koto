@@ -6,7 +6,7 @@ class ProcessorTest < MiniTest::Test
   include TestHelper
 
   def test_should_convert_scoped_constants_to_unscoped_constants
-    scoped_constant   = parse("Scoped::Constant")
+    scoped_constant   = parse "Scoped::Constant"
     unscoped_constant = n(:const, [nil, :"Scoped::Constant"])
     assert_equal unscoped_constant, process(scoped_constant)
   end
@@ -23,11 +23,12 @@ class ProcessorTest < MiniTest::Test
     assert c
 
     node = parse "module AST; class Context; def get_in(node); stack << node; end; end; end"
-    node = p.process node
-    assert_equal :module, node.type
+    node = p.process(node)
+    assert c.symbols[:AST].context.top_level?
 
-    node = parse "class Context; private; def method; end; end"
-    node = p.process node
+    node = parse "private; def method; end;"
+    node = p.process(node)
+    c = p.context
     assert_equal :private, c.access
   end
 end

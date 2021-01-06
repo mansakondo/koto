@@ -27,10 +27,17 @@ class KotoTest < Minitest::Test
     assert_equal unscoped_constant, processor.process(scoped_constant)
 
     p = processor
-    c = p.context
 
-    node = parse "class Context; private; def method; end; end"
-    node = p.process node
-    assert_equal :private, c.access
+    ast = parse "class Context; private; def push; end; end"
+    p.process(ast)
+
+    c       = p.context
+    symbols = c.symbols
+
+    klass  = symbols[:Context]
+    method = klass.symbols[:push]
+
+    assert_equal :public, klass.access
+    assert_equal :private, method.access
   end
 end

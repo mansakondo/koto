@@ -12,6 +12,7 @@ module Koto
 
           def record(symbol)
             self[symbol.name] = symbol
+            self
           end
 
           def variables
