@@ -8,7 +8,7 @@ module Koto
         attr_reader :context
         attr_reader :symbols
 
-        def current_scope
+        def parent_scope
           context.current_scope
         end
 
