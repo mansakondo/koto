@@ -26,29 +26,48 @@ Load *koto*.
 ```ruby
 require 'koto'
 ```
-A code example with `Koto::Parser::AST::Processor` which extends `Parser::AST::Processor`.
+Getting contextual information :
+```ruby
+builder = Koto::Parser::Builders::Default.new
+parser  = Parser::CurrentRuby.new(builder)
+
+code = "class Context; private; def push; pass; end; end"
+ast  = parser.parse(code)                                                                         
+
+processor = Koto::Parser::AST::Processor.new
+processor.process(ast)
+
+context = processor.context                                                                                                  
+symbols = context.symbols
+
+klass  = symbols[:Context]                                                                                                   
+method = klass.symbols[:push]    
+    
+p klass.access == :public 
+# => true
+p klass.context.top_level? 
+# => true
+
+p method.access == :private 
+# => true
+p method.context.in_class? 
+# => true
+```
+Processing nested names :
 ```ruby                                                            
-node = Parser::CurrentRuby.parse("Koto::Parser::AST::Processor::Resolver")      
-                                     
+node = Parser::CurrentRuby.parse("Koto::Parser::AST::Processor::Resolver")
+
 p node                               
-# (const                        
-#   (const  
-#     (const   
-#       (const     
-#         (const     
-#           nil                                                                                                                                 
-#           :Koto)                                                                                                                                 
-#         :Parser)                                                                                                                              
-#       :AST)                                                                                                                              
-#     :Processor)                                                                                                                             
-#   :Resolver)                                                                                                                                
-                                                                                                                                              
-processor = Koto::Parser::AST::Processor.new                                                                                        
-                                                                                                                                              
+# => s(:const,
+#  s(:const,
+#    s(:const,
+#      s(:const,
+#        s(:const, nil, :Koto), :Parser), :AST), :Processor), :Resolver)
+
+processor = Koto::Parser::AST::Processor.new
+
 p processor.process(node)
-# (const
-#   nil 
-#   :Koto::Parser::Processor::Resolver)
+# => s(:const, nil, :"Koto::Parser::AST::Processor::Resolver")
 ```
 
 ## Development
