@@ -20,21 +20,21 @@ module Koto
 
           def get_in(node)
             copy = self.deep_dup
-            copy.get_in!(node)
+            copy.send :get_in!, node
           end
 
           def get_in!(node)
             @scopes << SymbolTable.new
             @stack << node
 
-            self
+            self.freeze
           end
 
-          protected :get_in!
+          private :get_in!
 
           def get_out
             copy = self.deep_dup
-            copy.get_out!
+            copy.send :get_out!
           end
 
           def get_out!
@@ -46,24 +46,24 @@ module Koto
               @stack.pop
             end
 
-            return symbol_table, self
+            return symbol_table, self.freeze
           end
 
-          protected :get_out!
+          private :get_out!
 
           def save(node)
             copy = self.deep_dup
-            copy.save! node
+            copy.send :save!, node
           end
 
           def save!(node)
             symbol_table = symbols.record(node)
             active_scope.update(symbol_table)
 
-            self
+            self.freeze
           end
 
-          protected :save!
+          private :save!
 
           def symbols
             active_scope.data
@@ -84,7 +84,7 @@ module Koto
             copy = self.dup
             copy.instance_variable_set(:@access, access)
 
-            copy
+            copy.freeze
           end
 
           def top_level?
@@ -123,17 +123,6 @@ module Koto
 
           def in_dynamic_block?
             in_block? || in_lambda?
-          end
-
-          def deep_dup
-            copy = self.dup
-
-            copy.instance_variables.each do |attr|
-              value = instance_variable_get(attr).dup
-              copy.instance_variable_set attr, value
-            end
-
-            copy
           end
         end
       end

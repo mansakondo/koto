@@ -4,6 +4,7 @@ require 'parser/current'
 
 module Koto
   require "koto/version"
+  require "koto/core_ext/object"
 
   module Parser
 
