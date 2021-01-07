@@ -6,7 +6,7 @@ module Koto
       class Processor < ::Parser::AST::Processor
 
         OBJECT_METHODS = [
-          *(Object.methods - [:class])
+          *(Object.methods - [:class, :hash, :send])
         ]
 
         KERNEL_METHODS = [
