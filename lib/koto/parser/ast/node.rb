@@ -24,12 +24,10 @@ module Koto
           end
 
           if (context = properties[:context])
-            context = context.deep_dup if context.frozen?
             @context = context
           end
 
           if (symbols = properties[:symbols])
-            symbols = symbols.dup if symbols.frozen?
             @symbols = symbols
           end
         end
