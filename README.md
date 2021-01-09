@@ -23,7 +23,7 @@ Or install it yourself as:
 
 ## Usage
 
-Loading *koto*.
+Loading *koto* :
 ```ruby
 require 'koto'
 ```
