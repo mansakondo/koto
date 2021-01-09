@@ -17,7 +17,7 @@ module Koto
 
           def variables
             select do |_, symbol|
-              [:lvasgn, :ivasgn, :cvasgn, :gvasgn].includes? symbol.type
+              [:lvasgn, :ivasgn, :cvasgn, :gvasgn].include? symbol.type
             end
           end
 
