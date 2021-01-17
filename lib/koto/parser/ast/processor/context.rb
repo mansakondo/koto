@@ -65,6 +65,10 @@ module Koto
 
           private :save!
 
+          def each
+            scopes.each { |scope| yield scope }
+          end
+
           def symbols
             active_scope.data
           end
