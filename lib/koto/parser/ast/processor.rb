@@ -48,6 +48,10 @@ module Koto
           @name_processor ||= NameProcessor.new
         end
 
+        def resolver
+          @resolver = Resolver.new(self)
+        end
+
         def required_files
           @required_files ||= []
         end
@@ -173,9 +177,13 @@ module Koto
             name = name_processor.process(node)
           end
 
-          node.updated nil,
+          node = node.updated nil,
             [nil, name],
             :name => name
+
+          definition = resolver.resolve(node)
+
+          definition || node
         end
 
         def on_send(node)

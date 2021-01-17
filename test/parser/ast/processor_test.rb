@@ -31,4 +31,18 @@ class ProcessorTest < MiniTest::Test
     c = p.context
     assert_equal :private, c.access
   end
+
+  def test_resolver
+    p = processor
+
+    node = parse "class Resolver; def resolve(node); end; end; Resolver"
+    node = p.process(node)
+
+    klass = node.children.first
+    const = node.children.last
+    _, _, value = *const
+
+    assert_equal :class, value.type
+    assert const == klass
+  end
 end

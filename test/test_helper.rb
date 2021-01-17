@@ -42,4 +42,8 @@ module TestHelper
   def name_processor
     Koto::Parser::AST::Processor::NameProcessor.new
   end
+
+  def resolver(processor)
+    Koto::Parser::AST::Processor::Resolver.new(processor)
+  end
 end

@@ -15,6 +15,7 @@ module Koto
       class Processor
         require "koto/parser/ast/processor/context"
         require 'koto/parser/ast/processor/name_processor'
+        require 'koto/parser/ast/processor/resolver'
 
         class Context
           require "spaghetti_stack"

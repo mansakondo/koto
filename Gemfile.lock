@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    koto (0.1.0)
+    koto (0.2.1)
       parser (~> 3.0)
       spaghetti_stack (~> 0.2.1)
 
