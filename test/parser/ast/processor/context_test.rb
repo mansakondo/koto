@@ -42,4 +42,19 @@ class ContextTest < Minitest::Test
     assert_equal :private, a.access
     assert_equal :public, c.access
   end
+
+  def test_each
+    node = parse CODE
+
+    p = processor
+    p.process(node)
+
+    c = p.context
+    assert c.each
+
+    c.each do |scope|
+      symbols = scope.data
+      assert symbols
+    end
+  end
 end

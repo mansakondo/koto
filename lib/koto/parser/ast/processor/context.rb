@@ -66,6 +66,7 @@ module Koto
           private :save!
 
           def each
+            return self.to_enum unless block_given?
             scopes.each { |scope| yield scope }
           end
 
