@@ -7,6 +7,8 @@ require "minitest/autorun"
 
 module TestHelper
 
+  CODE = "class Context; private; def push; pass; end; end";
+
   def parser
     builder = Koto::Parser::Builders::Default.new
     ::Parser::CurrentRuby.new(builder)
