@@ -179,7 +179,7 @@ module Koto
         end
 
         def on_send(node)
-          _, name, _ = *node
+          receiver, name, _ = *node
 
           # Invokes specific handlers for predefined methods
           if PREDEFINED_METHODS.include? name
@@ -194,7 +194,7 @@ module Koto
           end
 
           node.updated nil,
-            [nil, name],
+            [receiver, name],
             :name => name
 
           super
