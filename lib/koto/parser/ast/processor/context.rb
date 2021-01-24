@@ -4,7 +4,6 @@ module Koto
   module Parser
     module AST
       class Processor
-
         class Context
           attr_reader :scopes
           attr_reader :stack
