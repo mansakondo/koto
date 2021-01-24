@@ -27,7 +27,7 @@ module Koto
             @scopes << SymbolTable.new
             @stack << node
 
-            self.freeze
+            freeze
           end
 
           private :get_in!
@@ -46,7 +46,7 @@ module Koto
               @stack.pop
             end
 
-            return symbol_table, self.freeze
+            return symbol_table, freeze
           end
 
           private :get_out!
@@ -60,7 +60,7 @@ module Koto
             symbol_table = symbols.record(node)
             active_scope.update(symbol_table)
 
-            self.freeze
+            freeze
           end
 
           private :save!
