@@ -186,6 +186,11 @@ module Koto
           definition || node
         end
 
+        def on_sym(node)
+          definition = resolver.resolve(node)
+          definition || node
+        end
+
         def on_send(node)
           _, name, _ = *node
 
