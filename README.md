@@ -1,9 +1,9 @@
 # koto    
 
 (This project is still in prototype stage)<br><br>
-*koto* is a Ruby symbol solver built on top of the [*parser*](https://github.com/whitequark/parser) gem. We it, we can resolves references like method calls, accesses to variables, inheritance relationships and more.
+*koto* is a Ruby symbol solver built on top of the [parser](https://github.com/whitequark/parser) gem. With it, we can resolve method calls, accesses to variables and constants (and maybe also inheritance relationships in the future).
 
-koto traverses the [AST](https://github.com/whitequark/ast) of a given source code, stores nodes in a [symbol table for each scopes](https://en.wikipedia.org/wiki/Parent_pointer_tree#Use_in_compilers) and uses it to resolve references.
+koto traverses the [AST](https://github.com/whitequark/ast) of a given source code, stores nodes in a [symbol table for each scopes](https://en.wikipedia.org/wiki/Parent_pointer_tree#Use_in_compilers), and uses it to resolve references.
 
 ## Installation
 
